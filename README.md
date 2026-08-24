@@ -29,6 +29,10 @@ accuracy, is among the features the gate down-weights most.
 | `sbi_pipeline.ipynb` | Interactive walkthrough of the full pipeline for a single seed |
 | `requirements.txt` | Pinned dependencies |
 
+## Data
+
+No external dataset is required. All training and evaluation data are generated synthetically at runtime by the Jansen-Rit simulator, optionally projected to scalp EEG via the MNE lead-field model.
+
 ## Installation
 
 The pipeline requires Python 3.11 and a POSIX operating system (Linux, macOS,
