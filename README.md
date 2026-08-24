@@ -26,13 +26,8 @@ accuracy, is among the features the gate down-weights most.
 | `post_analysis.py` | Posterior pairwise-correlation diagnostics for parameter degeneracy |
 | `experiment_log.py` | Append-only CSV logging of each run's configuration and metrics to `results/` |
 | `run.py` | Command-line entry point that trains and evaluates a single configuration |
-| `notebooks/sbi_pipeline.ipynb` | Interactive walkthrough of the full pipeline for a single seed |
+| `sbi_pipeline.ipynb` | Interactive walkthrough of the full pipeline for a single seed |
 | `requirements.txt` | Pinned dependencies |
-
-All modules import as a flat package (`from config import Config`, `from
-training import ...`); scripts should be run from the repository root. `run.py`
-creates a `results/` directory on first invocation to hold the logged CSVs;
-this directory is not included in the repository.
 
 ## Installation
 
@@ -45,13 +40,11 @@ git clone <this-repo-url>
 cd <repo-name>
 python -m venv .venv && source .venv/bin/activate
 
-# torch is pinned to a CUDA 12.4 build. On a different CUDA version or a
-# CPU-only machine, install torch separately first, following
-# https://pytorch.org/get-started/locally/, then run:
+# torch is pinned to a CUDA 12.4 build. On a different CUDA version or a CPU-only machine,
+# install torch separately first, following https://pytorch.org/get-started/locally/, then run:
 pip install -r requirements.txt --no-deps torch
-# Alternatively, remove the torch line from requirements.txt and allow
-# torch's own installer to select the appropriate build before installing
-# the remaining dependencies.
+# Alternatively, remove the torch line from requirements.txt and allow torch's own installer
+# to select the appropriate build before installing the remaining dependencies.
 
 pip install -r requirements.txt
 ```
@@ -93,31 +86,15 @@ additionally logs one row per excluded feature to `results/ablation.csv` (see
 | `--use_gating` | Enables the learned feature gate (disabled by default) |
 | `--gate_activation {sigmoid,softmax}` | Selects independent versus competing gating |
 | `--run_ablation` | Retrains once per feature, excluding it, and logs the resulting ΔR² |
-| `--exclude_features F1 F2 ...` | Manually excludes specific features |
+| `--exclude_features` | Manually excludes specific features |
 | `--seed` | Training seed (the paper reports results across nine independent seeds) |
 | `--no_noise` / `--snr_min` / `--snr_max` | Observation-noise controls |
 | `--run_name`, `--notes` | Labels recorded in `results/experiments.csv` |
 
-A single run (32,768 simulations, up to 250 epochs) requires on the order of
-tens of minutes of wall-clock time on CPU. A CUDA-capable GPU is recommended,
-particularly for `--run_ablation`, which retrains seven additional models.
-
 ## Reproducing the paper's results
 
-1. **Table 1 (ablation columns) and the "No gating" row of Table 3:** run
-   `python run.py --run_ablation --seed <s>` for each of the nine seeds.
-2. **Table 1 (gate columns) and the gated rows of Table 3:** run with
-   `--use_gating --gate_activation sigmoid` and `--gate_activation softmax`
-   for the same nine seeds.
-3. **Table 2 (Spearman ρ and the sign-flip test):** compute the per-seed
-   Spearman correlation between each seed's ablation ΔR² and gate weight from
-   the logged CSVs, then apply the exact sign-flip test across the nine
-   per-seed values (512 sign assignments; see Methods 3.8 in the paper).
-4. **Posterior degeneracy diagnostics (Methods, Discussion):**
-   `post_analysis.compute_posterior_correlation()` operates directly on a
-   trained `posterior` object held in memory and does not require retraining.
-5. `notebooks/sbi_pipeline.ipynb` walks through steps 1–4 for a single seed
-   and is a useful first check before running the full nine-seed sweep.
-
-As a check that the environment reproduces the paper's setup, the ungated
-baseline should attain mean R² ≈ 0.79 (Table 3).
+1. Table 1 (ablation columns) and the "No gating" row of Table 3: run python run.py --run_ablation --seed SEED for each of the nine seeds.
+2. Table 1 (gate columns) and the "Gated" rows of Table 3: run with --use_gating --gate_activation sigmoid and --gate_activation softmax for the same nine seeds.
+3. Table 2 (Spearman ρ and the sign-flip test): compute the per-seed Spearman correlation between each seed's ablation ΔR² and gate weight from the logged CSVs, then apply the exact sign-flip test across the nine per-seed values.
+4. Posterior degeneracy diagnostics (Methods, Discussion): post_analysis.compute_posterior_correlation() operates directly on a trained posterior object held in memory and does not require retraining.
+5. Interactive walkthrough: notebooks/sbi_pipeline.ipynb walks through steps 1–4 for a single seed and is a useful first check before running the full nine-seed sweep.
