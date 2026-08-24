@@ -21,14 +21,6 @@ POSTERIOR_SAMPLE_TIMEOUT_S = 60
 
 @contextmanager
 def _sampling_timeout(seconds: int):
-    """
-    Abort a single posterior.sample() call that's stuck in sbi's rejection
-    sampler (see samplers/rejection/rejection.py: `while num_remaining > 0`
-    has no cap and can spin forever if the trained flow's acceptance rate
-    against the prior support is ~0% for a given observation). SIGALRM fires
-    between the loop's proposal-batch calls, so this reliably interrupts it
-    without corrupting torch/CUDA state. Main-thread/Unix only.
-    """
     def _on_alarm(signum, frame):
         raise PosteriorSamplingTimeout(f"posterior.sample() exceeded {seconds}s")
 
@@ -108,11 +100,7 @@ def evaluate_posterior(posterior, simulator: Callable, prior,
             with _sampling_timeout(POSTERIOR_SAMPLE_TIMEOUT_S):
                 samples = posterior.sample((config.N_POSTERIOR_SAMPLES,), x=x_obs, show_progress_bars=False)
         except PosteriorSamplingTimeout:
-            # Trained flow's acceptance rate against the prior support collapsed
-            # to ~0% for this observation (sbi's rejection sampler has no cap —
-            # see _sampling_timeout docstring). Drop this eval point rather than
-            # stalling the whole run; a handful of skips out of N_EVAL_SAMPLES
-            # doesn't meaningfully bias R²/NRMSE/Pearson.
+
             n_skipped += 1
             logging.warning(f"  Skipped eval point {i}: posterior sampling timed out after {POSTERIOR_SAMPLE_TIMEOUT_S}s (near-zero acceptance rate)")
             continue
