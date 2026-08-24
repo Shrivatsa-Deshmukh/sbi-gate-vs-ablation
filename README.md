@@ -101,4 +101,4 @@ additionally logs one row per excluded feature to `results/ablation.csv` (see
 2. Table 1 (gate columns) and the "Gated" rows of Table 3: run with --use_gating --gate_activation sigmoid and --gate_activation softmax for the same nine seeds.
 3. Table 2 (Spearman ρ and the sign-flip test): compute the per-seed Spearman correlation between each seed's ablation ΔR² and gate weight from the logged CSVs, then apply the exact sign-flip test across the nine per-seed values.
 4. Posterior degeneracy diagnostics (Methods, Discussion): post_analysis.compute_posterior_correlation() operates directly on a trained posterior object held in memory and does not require retraining.
-5. Interactive walkthrough: notebooks/sbi_pipeline.ipynb walks through steps 1–4 for a single seed and is a useful first check before running the full nine-seed sweep.
+5. Interactive walkthrough: sbi_pipeline.ipynb walks through steps 1–4 for a single seed and is a useful first check before running the full nine-seed sweep.
