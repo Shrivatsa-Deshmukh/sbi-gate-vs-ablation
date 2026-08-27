@@ -1,8 +1,6 @@
 # SBI - Gate vs Ablation
 
-This repository contains the code accompanying the paper *"Gate-Based Feature
-Importance Is Not a Reliable Diagnostic for Simulation-Based Inference: A
-Jansen-Rit EEG Case Study."*
+This repository contains the code accompanying the paper *"Coherent but Inverted: Learned Feature Gates in Simulation-Based Inference"*
 
 We train sequential neural posterior estimation (SNPE) models to infer four
 physiological parameters of a Jansen-Rit neural mass model from simulated EEG,
