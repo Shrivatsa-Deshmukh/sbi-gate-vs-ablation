@@ -90,11 +90,3 @@ additionally logs one row per excluded feature to `results/ablation.csv` (see
 | `--seed` | Training seed (the paper reports results across nine independent seeds) |
 | `--no_noise` / `--snr_min` / `--snr_max` | Observation-noise controls |
 | `--run_name`, `--notes` | Labels recorded in `results/experiments.csv` |
-
-## Reproducing the paper's results
-
-1. Table 1 (ablation columns) and the "No gating" row of Table 3: run python run.py --run_ablation --seed SEED for each of the nine seeds.
-2. Table 1 (gate columns) and the "Gated" rows of Table 3: run with --use_gating --gate_activation sigmoid and --gate_activation softmax for the same nine seeds.
-3. Table 2 (Spearman ρ and the sign-flip test): compute the per-seed Spearman correlation between each seed's ablation ΔR² and gate weight from the logged CSVs, then apply the exact sign-flip test across the nine per-seed values.
-4. Posterior degeneracy diagnostics (Methods, Discussion): post_analysis.compute_posterior_correlation() operates directly on a trained posterior object held in memory and does not require retraining.
-5. Interactive walkthrough: sbi_pipeline.ipynb walks through steps 1–4 for a single seed and is a useful first check before running the full nine-seed sweep.
