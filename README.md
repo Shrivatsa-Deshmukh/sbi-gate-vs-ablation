@@ -36,8 +36,8 @@ or WSL), since `experiment_log.py` uses `fcntl` for file locking, which is not
 available on native Windows.
 
 ```bash
-git clone <this-repo-url>
-cd <repo-name>
+git clone <repo-url>
+cd <repo>
 python -m venv .venv && source .venv/bin/activate
 
 # torch is pinned to a CUDA 12.4 build. On a different CUDA version or a CPU-only machine,
