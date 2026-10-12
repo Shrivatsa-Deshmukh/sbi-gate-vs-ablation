@@ -8,14 +8,6 @@
 - [**Sim2Science: ML with Imperfect Scientific Models**](#)
 - [**Interpretability for Discovery: Understanding and Discovering Novel Knowledge in AI Models**](#) 
 
-Shrivatsa Deshmukh<sup>1†</sup>, Sasha Brenner<sup>2,3</sup>, Thomas R. Knösche<sup>2*</sup>, Nico Scherf<sup>2,4*</sup>
-
-<sup>1</sup>University of Minnesota – Twin Cities  ·  <sup>2</sup>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig  ·  
-
-<sup>3</sup>Leipzig University  ·  <sup>4</sup>ScaDS.AI Dresden/Leipzig
-
-<sup>†</sup>[Lead and corresponding author]  <sup>*</sup>[Equal senior contribution]
-
 [Paper (arXiv)](https://arxiv.org/abs/XXXX.XXXXX) · [OpenReview: Sim2Science](#) · [OpenReview: Interp4Discovery](#)
 
 ---
