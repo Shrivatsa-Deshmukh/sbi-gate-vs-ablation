@@ -4,7 +4,9 @@
 [![NeurIPS 2026 Workshop](https://img.shields.io/badge/NeurIPS%202026-Sim2Science-4b44ce.svg)](#)
 [![NeurIPS 2026 Workshop](https://img.shields.io/badge/NeurIPS%202026-Interp4Discovery-4b44ce.svg)](#)
 
-📄 **Accepted at two NeurIPS 2026 workshops: [Sim2Science](#) and [Interp4Discovery](#).**
+📄 **Accepted at two NeurIPS 2026 workshops:**
+- [**Sim2Science: ML with Imperfect Scientific Models**](#)
+- [**Interpretability for Discovery: Understanding and Discovering Novel Knowledge in AI Models**](#) 
 
 **Shrivatsa Deshmukh**<sup>1</sup>, **Sasha Brenner**<sup>2,3</sup>, **Thomas R. Knösche**<sup>2</sup>, **Nico Scherf**<sup>2,4</sup>
 
