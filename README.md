@@ -1,14 +1,11 @@
 # Gate-Based Feature Importance in Simulation-Based Inference for EEG: A Cautionary Tale
 
 [![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
-[![NeurIPS 2026 Workshop](https://img.shields.io/badge/NeurIPS%202026-Sim2Science-4b44ce.svg)](#)
-[![NeurIPS 2026 Workshop](https://img.shields.io/badge/NeurIPS%202026-Interp4Discovery-4b44ce.svg)](#)
+
 
 📄 **Accepted at two NeurIPS 2026 workshops:**
-- [**Sim2Science: ML with Imperfect Scientific Models**](#)
-- [**Interpretability for Discovery: Understanding and Discovering Novel Knowledge in AI Models**](#) 
-
-[Paper (arXiv)](https://arxiv.org/abs/XXXX.XXXXX) · [OpenReview: Sim2Science](#) · [OpenReview: Interp4Discovery](#)
+- **Sim2Science: ML with Imperfect Scientific Models**
+- **Interpretability for Discovery: Understanding and Discovering Novel Knowledge in AI Models**
 
 ---
 
