@@ -1,4 +1,4 @@
-# sbi - Gate vs Ablation
+# SBI - Gate vs Ablation
 
 We train sequential neural posterior estimation (SNPE) models to infer four
 physiological parameters of a Jansen-Rit neural mass model from simulated EEG,
