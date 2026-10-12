@@ -1,23 +1,37 @@
-# SBI - Gate vs Ablation
+# Gate-Based Feature Importance in Simulation-Based Inference for EEG: A Cautionary Tale
 
-We train sequential neural posterior estimation (SNPE) models to infer four
-physiological parameters of a Jansen-Rit neural mass model from simulated EEG,
-and compare a jointly-trained feature-gating mechanism against gold-standard,
-retrain-based ablation as measures of feature importance. Across nine
-independent training seeds, the two measures are negatively correlated
-(Spearman's ρ ≈ −0.61 for sigmoid gating, −0.56 for softmax): total signal
-power, the feature whose exclusion causes the largest drop in ablation
-accuracy, is among the features the gate down-weights most.
+[![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
+[![NeurIPS 2026 Workshop](https://img.shields.io/badge/NeurIPS%202026-Sim2Science-4b44ce.svg)](#)
+[![NeurIPS 2026 Workshop](https://img.shields.io/badge/NeurIPS%202026-Interp4Discovery-4b44ce.svg)](#)
+
+📄 **Accepted at two NeurIPS 2026 workshops: [Sim2Science](#) and [Interp4Discovery](#).**
+
+**Shrivatsa Deshmukh**<sup>1</sup>, **Sasha Brenner**<sup>2,3</sup>, **Thomas R. Knösche**<sup>2</sup>, **Nico Scherf**<sup>2,4</sup>
+
+<sup>1</sup>University of Minnesota – Twin Cities &nbsp;·&nbsp;
+<sup>2</sup>Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig &nbsp;·&nbsp;
+<sup>3</sup>Leipzig University &nbsp;·&nbsp;
+<sup>4</sup>ScaDS.AI Dresden/Leipzig
+
+[Paper (arXiv)](https://arxiv.org/abs/XXXX.XXXXX) · [OpenReview: Sim2Science](#) · [OpenReview: Interp4Discovery](#)
+
+---
+
+## Summary
+
+We train neural posterior estimation (NPE) models to infer four physiological parameters of a Jansen–Rit neural mass model from simulated EEG. We then compare two measures of feature importance: a feature-gating mechanism trained jointly with the model, and gold-standard retrain-based ablation.
+
+Across nine independent training seeds, the two measures are **negatively correlated** (Spearman's ρ ≈ −0.61 for sigmoid gating, −0.56 for softmax gating). Total signal power is the feature whose exclusion causes the largest drop in accuracy under ablation, yet it is among the features the gate down-weights most. Gating costs almost no predictive accuracy. **Learned gate weights should not be read as feature importance without validating them against a causal measure.**
 
 ## Repository structure
 
 | File | Contents |
 |---|---|
 | `config.py` | Experiment hyperparameters (`Config` dataclass): simulation, training, prior bounds, gating, and noise settings |
-| `simulator.py` | Jansen-Rit ODE simulator, pink-noise generation, and Sobol parameter sampling |
-| `forward_model.py` | MNE `fsaverage` lead-field model projecting the simulated source to five-electrode scalp EEG |
+| `simulator.py` | Jansen–Rit ODE simulator, pink-noise generation, and Sobol parameter sampling |
+| `forward_model.py` | MNE fsaverage lead-field model projecting the simulated source to five-electrode scalp EEG |
 | `embedding.py` | Seven-feature statistical embedding per channel, and the optional learned gate (sigmoid or softmax) |
-| `training.py` | SNPE training loop, posterior evaluation, and the retrain-based ablation procedure |
+| `training.py` | NPE training loop, posterior evaluation, and the retrain-based ablation procedure |
 | `metrics.py` | R², NRMSE, and Pearson correlation, and a timeout guard around `posterior.sample()` |
 | `post_analysis.py` | Posterior pairwise-correlation diagnostics for parameter degeneracy |
 | `experiment_log.py` | Append-only CSV logging of each run's configuration and metrics to `results/` |
@@ -27,59 +41,44 @@ accuracy, is among the features the gate down-weights most.
 
 ## Data
 
-No external dataset is required. All training and evaluation data are generated synthetically at runtime by the Jansen-Rit simulator, optionally projected to scalp EEG via the MNE lead-field model.
+No external dataset is required. The Jansen–Rit simulator generates all training and evaluation data at runtime, and the MNE lead-field model can optionally project it to scalp EEG.
 
 ## Installation
 
-The pipeline requires Python 3.11 and a POSIX operating system (Linux, macOS,
-or WSL), since `experiment_log.py` uses `fcntl` for file locking, which is not
-available on native Windows.
+The pipeline requires **Python 3.11** and a POSIX operating system (Linux, macOS, or WSL). `experiment_log.py` uses `fcntl` for file locking, which is not available on native Windows.
 
 ```bash
-git clone <repo-url>
-cd <repo>
+git clone https://github.com/Shrivatsa-Deshmukh/sbi-gate-vs-ablation.git
+cd sbi-gate-vs-ablation
 python -m venv .venv && source .venv/bin/activate
-
-# torch is pinned to a CUDA 12.4 build. On a different CUDA version or a CPU-only machine,
-# install torch separately first, following https://pytorch.org/get-started/locally/, then run:
-pip install -r requirements.txt --no-deps torch
-# Alternatively, remove the torch line from requirements.txt and allow torch's own installer
-# to select the appropriate build before installing the remaining dependencies.
-
-pip install -r requirements.txt
 ```
 
-`forward_model.py` downloads the MNE `fsaverage` template head model on first
-use and caches the computed lead fields under `~/.mne/lead_field_cache/`. The
-first invocation of any script therefore requires network access and incurs a
-one-time delay.
+`requirements.txt` pins PyTorch 2.5.1 built for **CUDA 12.4**, which is the build used for the paper.
+
+On first use, `forward_model.py` downloads the MNE fsaverage template head model and caches the computed lead fields under `~/.mne/lead_field_cache/`. The first run of any script therefore needs network access and takes longer.
 
 ## Quickstart
 
-To train the ungated baseline for a single seed:
+Train the ungated baseline for a single seed:
 
 ```bash
 python run.py --seed 0
 ```
 
-To enable learned feature gating (sigmoid weights each feature
-independently; softmax forces the weights to compete):
+Enable learned feature gating. Sigmoid weights each feature independently; softmax makes the weights compete:
 
 ```bash
 python run.py --use_gating --gate_activation sigmoid --seed 0 --run_name sigmoid_seed0
 python run.py --use_gating --gate_activation softmax --seed 0 --run_name softmax_seed0
 ```
 
-To run the gold-standard ablation, which retrains the model once per excluded
-feature:
+Run the gold-standard ablation, which retrains the model once per excluded feature:
 
 ```bash
 python run.py --run_ablation --seed 0 --run_name baseline_seed0
 ```
 
-Each run appends one row to `results/experiments.csv`; `--run_ablation`
-additionally logs one row per excluded feature to `results/ablation.csv` (see
-`experiment_log.py` for the column schema).
+Each run appends one row to `results/experiments.csv`. `--run_ablation` also logs one row per excluded feature to `results/ablation.csv`. See `experiment_log.py` for the column schema.
 
 | Flag | Purpose |
 |---|---|
@@ -90,3 +89,23 @@ additionally logs one row per excluded feature to `results/ablation.csv` (see
 | `--seed` | Training seed (the paper reports results across nine independent seeds) |
 | `--no_noise` / `--snr_min` / `--snr_max` | Observation-noise controls |
 | `--run_name`, `--notes` | Labels recorded in `results/experiments.csv` |
+
+## Citation
+
+If you use this code, please cite:
+
+```bibtex
+@misc{deshmukh2026gate,
+  title         = {Gate-Based Feature Importance in Simulation-Based Inference for {EEG}: A Cautionary Tale},
+  author        = {Deshmukh, Shrivatsa and Brenner, Sasha and Kn{\"o}sche, Thomas R. and Scherf, Nico},
+  year          = {2026},
+  eprint        = {XXXX.XXXXX},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  note          = {NeurIPS 2026 Workshops: Sim2Science and Interp4Discovery}
+}
+```
+
+## License
+
+See [`LICENSE`](LICENSE).
