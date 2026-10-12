@@ -14,7 +14,7 @@ Shrivatsa Deshmukh<sup>1†</sup>, Sasha Brenner<sup>2,3</sup>, Thomas R. Knösc
 
 <sup>3</sup>Leipzig University  ·  <sup>4</sup>ScaDS.AI Dresden/Leipzig
 
-<sup>†</sup>Lead and corresponding author  ·  <sup>*</sup>Equal senior contribution
+<sup>†</sup>[Lead and corresponding author]  <sup>*</sup>[Equal senior contribution]
 
 [Paper (arXiv)](https://arxiv.org/abs/XXXX.XXXXX) · [OpenReview: Sim2Science](#) · [OpenReview: Interp4Discovery](#)
 
