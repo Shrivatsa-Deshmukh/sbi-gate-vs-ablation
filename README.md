@@ -1,6 +1,6 @@
 # Gate-Based Feature Importance in Simulation-Based Inference for EEG: A Cautionary Tale
 
-[![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
+[![arXiv](https://img.shields.io/badge/arXiv-2610.30364-b31b1b.svg)](https://arxiv.org/abs/2610.30364)
 
 
 📄 **Accepted at two NeurIPS 2026 workshops:**
