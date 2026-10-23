@@ -4,8 +4,8 @@
 
 
 📄 **Accepted at NeurIPS 2026 workshops:**
-- **Sim2Science: ML with Imperfect Scientific Models**
 - **Interpretability for Discovery: Understanding and Discovering Novel Knowledge in AI Models**
+- **Sim2Science: ML with Imperfect Scientific Models**
 
 ---
 
