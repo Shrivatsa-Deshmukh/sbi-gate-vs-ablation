@@ -3,7 +3,7 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2610.30364-b31b1b.svg)](https://arxiv.org/abs/2610.30364)
 
 
-📄 **Accepted at two NeurIPS 2026 workshops:**
+📄 **Accepted at NeurIPS 2026 workshops:**
 - **Sim2Science: ML with Imperfect Scientific Models**
 - **Interpretability for Discovery: Understanding and Discovering Novel Knowledge in AI Models**
 
